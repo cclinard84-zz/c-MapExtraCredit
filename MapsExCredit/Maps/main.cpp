@@ -66,33 +66,38 @@ int main(int argc, char **argv)
     students[8] = Student( "Holberton", "Betty", "P20112837", 3.1 );
     students[9] = Student( "Sammet", "Jean", "P20112836", 3.0 );
     
-    mymap.insert( std::pair<string,Student>( students[0].id, students[0]) );
-    mymap.insert( std::pair<string,Student>( students[1].id, students[1]) );
-    mymap.insert( std::pair<string,Student>( students[2].id, students[2]) );
-    mymap.insert( std::pair<string,Student>( students[3].id, students[3]) );
-    mymap.insert( std::pair<string,Student>( students[4].id, students[4]) );
     mymap.insert( std::pair<string,Student>( students[5].id, students[5]) );
+    mymap.insert( std::pair<string,Student>( students[4].id, students[4]) );
+    mymap.insert( std::pair<string,Student>( students[3].id, students[3]) );
+    mymap.insert( std::pair<string,Student>( students[2].id, students[2]) );
+    mymap.insert( std::pair<string,Student>( students[1].id, students[1]) );
+    mymap.insert( std::pair<string,Student>( students[0].id, students[0]) );
     mymap.insert( std::pair<string,Student>( students[6].id, students[6]) );
     mymap.insert( std::pair<string,Student>( students[7].id, students[7]) );
     mymap.insert( std::pair<string,Student>( students[8].id, students[8]) );
     mymap.insert( std::pair<string,Student>( students[9].id, students[9]) );
     
     string userInput = "-1";
+    map<string, Student>::reverse_iterator it = mymap.rbegin();
     
-    cout << "The smallest element is " << std::min_element(mymap.begin(),mymap.end(), compareStudents)->second << endl;
-    
+   
 	cout << "Hello! Welcome to student mapper!" << endl;
+    cout << "The smallest element is " << std::min_element(mymap.begin(),mymap.end(), compareStudents)->second << endl;
+    cout << "Now printing reverse order by student id:" << endl;
+     while(it != mymap.rend()){
+        cout << it->second << endl;
+        it++;
+    }
     cout << "Input the student ID of the student you want to search for or 0 to exit: ";
     cin >> userInput;
     while(userInput != "0"){
-        map<string, Student>::iterator it = mymap.begin();
-        while(it != mymap.end()){
-            if(mymap.count(userInput) > 0){
-                cout << mymap.find(userInput)->second;
-                break;
-            }
-            it++;
+        if(mymap.count(userInput) > 0){
+            cout << mymap.find(userInput)->second;
         }
+        else{
+            cout << "Could not find the student" << endl;
+        }
+        
         cout << "Input the student ID of the student you want to search for: ";
         cin >> userInput;
     }
@@ -101,6 +106,7 @@ int main(int argc, char **argv)
 }
 
 
-bool compareStudents(std::pair<string,Student> it1, std::pair<string,Student> it2){ 
-    return it1.second.lastName < it2.second.lastName;
+bool compareStudents(std::pair<string,Student> pair1, std::pair<string,Student> pair2){ 
+    return pair1.second.lastName < pair2.second.lastName;
 }
+
