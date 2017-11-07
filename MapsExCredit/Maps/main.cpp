@@ -35,7 +35,14 @@ Student::Student(string lastName, string firstName, string id, double gpa){
     this->lastName = lastName;
     this->id = id;
     this->gpa = gpa;
-}
+};
+
+class DescendingOrder{
+    public:
+        bool operator()(const string& s1, const string& s2) const {
+            return s1 > s2;
+        }
+};
 
 ostream& operator<<( ostream& out, const Student& student ){
        out << student.firstName << ", " << student.lastName 
@@ -43,19 +50,20 @@ ostream& operator<<( ostream& out, const Student& student ){
         return out;
 }
 
+
 bool operator<(const Student s1, const Student s2){
     return strcmp(s1.id.c_str(), s2.id.c_str());
 }
 
 bool compareStudents(std::pair<string,Student> , std::pair<string,Student>);
 void createStudents(Student[]);
-void buildMap(map<string, Student>&, Student[]);
+void buildMap(map<string, Student, DescendingOrder>&, Student[]);
 
 int main(int argc, char **argv)
 {
-    map<string, Student> mymap;
+    map<string, Student, DescendingOrder> mymap;
     Student students[10];
-    map<string, Student>::const_iterator cIt;   
+    map<string, Student, DescendingOrder>::const_iterator cIt;   
     string userInput = "-1";
 
 	cout << "Hello! Welcome to student mapper!" << endl;
@@ -63,7 +71,7 @@ int main(int argc, char **argv)
     buildMap(mymap, students);
     cout << "The smallest element is " << std::min_element(mymap.begin(),mymap.end(), compareStudents)->second << endl;
     cout << "Now printing reverse order by student id:" << endl;
-   for(auto cIt = mymap.crbegin(); cIt != mymap.crend(); ++cIt){
+   for(auto cIt = mymap.cbegin(); cIt != mymap.cend(); ++cIt){
         cout << (*cIt).second << endl;
     }
     cout << "Input the student ID of the student you want to search for or 0 to exit: ";
@@ -100,7 +108,7 @@ void createStudents(Student students[10]){
     students[8] = Student( "Holberton", "Betty", "P20112837", 3.1 );
     students[9] = Student( "Sammet", "Jean", "P20112836", 3.0 );
 }
-void buildMap(map<string, Student> &mymap, Student students[10]){
+void buildMap(map<string, Student, DescendingOrder> &mymap, Student students[10]){
     mymap.insert( std::pair<string,Student>( students[5].id, students[5]) );
     mymap.insert( std::pair<string,Student>( students[4].id, students[4]) );
     mymap.insert( std::pair<string,Student>( students[3].id, students[3]) );
